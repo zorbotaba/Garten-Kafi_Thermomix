@@ -226,7 +226,7 @@
 <body>
     <header>
         <h1>Reservierungssystem</h1>
-        <button id="loginButton">Anmelden</button>
+        <button id="loginButton">Admin Portal</button>
     </header>
 
     <div class="container" id="reservationForm">
@@ -241,7 +241,7 @@
             <label for="participants">Anzahl Teilnehmer (Pflichtfeld):</label>
             <input type="number" id="participants" name="participants" min="1" required>
 
-            <label for="time">Zeit (max. 5 Personen pro Zeit):</label>
+            <label for="time">Zeit (Pflichtangabe):</label>
             <select id="time" name="time" required>
                 <option value="">Bitte wählen...</option>
             </select>
@@ -272,9 +272,9 @@
         </table>
 
         <h3>Verfügbare Zeiten</h3>
-        <p>10:00 - <span id="slot10">0/5</span> Plätze belegt</p>
-        <p>12:00 - <span id="slot12">0/5</span> Plätze belegt</p>
-        <p>14:00 - <span id="slot14">0/5</span> Plätze belegt</p>
+        <p>10:00 - <span id="slot10">0/5</span> Platz/Plätze belegt</p>
+        <p>12:00 - <span id="slot12">0/5</span> Platz/Plätze belegt</p>
+        <p>14:00 - <span id="slot14">0/5</span> Platz/Plätze belegt</p>
     </div>
 
     <script>
@@ -367,7 +367,7 @@
                 if (timeSlots[time] < 5) {
                     const option = document.createElement('option');
                     option.value = time;
-                    option.textContent = `${time} (${5 - timeSlots[time]} Plätze verfügbar)`;
+                    option.textContent = `${time} (${5 - timeSlots[time]} Platz/Plätze verfügbar)`;
                     timeSelect.appendChild(option);
                 }
             });
