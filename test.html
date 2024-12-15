@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservierung</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        header button {
+            background-color: white;
+            color: #4CAF50;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        header button:hover {
+            background-color: #45a049;
+            color: white;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input, textarea, select, button {
+            margin-bottom: 15px;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="text"], input[type="tel"], input[type="number"], select {
+            font-size: 14px;
+        }
+
+        textarea {
+            font-size: 14px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .delete-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .delete-btn:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Reservierungssystem</h1>
+        <button id="loginButton">Anmelden</button>
+    </header>
+
+    <div class="container" id="reservationForm">
+        <h2>Reservierung ausfüllen</h2>
+        <form id="form">
+            <label for="name">Name (Pflichtfeld):</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="phone">Telefonnummer (Pflichtfeld):</label>
+            <input type="tel" id="phone" name="phone" required>
+
+            <label for="participants">Anzahl Teilnehmer (Pflichtfeld):</label>
+            <input type="number" id="participants" name="participants" min="1" required>
+
+            <label for="time">Zeit (max. 5 Personen pro Zeit):</label>
+            <select id="time" name="time" required>
+                <option value="">Bitte wählen...</option>
+                <!-- Optionen werden dynamisch hinzugefügt -->
+            </select>
+
+            <label for="comment">Kommentar (freiwillig):</label>
+            <textarea id="comment" name="comment" rows="3"></textarea>
+
+            <button type="submit">Absenden</button>
+        </form>
+    </div>
+
+    <div class="container hidden" id="adminPanel">
+        <h2>Admin-Panel</h2>
+        <table id="reservationTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Telefonnummer</th>
+                    <th>Teilnehmer</th>
+                    <th>Zeit</th>
+                    <th>Kommentar</th>
+                    <th>Aktionen</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Reservierungsdaten werden hier eingefügt -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const loginButton = document.getElementById('loginButton');
+        const reservationForm = document.getElementById('reservationForm');
+        const adminPanel = document.getElementById('adminPanel');
+        const form = document.getElementById('form');
+        const reservationTable = document.getElementById('reservationTable').querySelector('tbody');
+        const timeSelect = document.getElementById('time');
+
+        let reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+        let timeSlots = { '10:00': 0, '12:00': 0, '14:00': 0 };
+        let loggedInUser = null;
+
+        // Verschlüsselungsfunktion
+        const cyrb53 = (str, seed = 0) => {
+            let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+            for (let i = 0, ch; i < str.length; i++) {
+                ch = str.charCodeAt(i);
+                h1 = Math.imul(h1 ^ ch, 2654435761);
+                h2 = Math.imul(h2 ^ ch, 1597334677);
+            }
+            h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507);
+            h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+            h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507);
+            h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+
+            return 4294967296 * (2097151 & h2) + (h1 >>> 0);
+        };
+
+        // Funktion zum Anmelden
+        loginButton.addEventListener('click', () => {
+            if (loggedInUser) {
+                loggedInUser = null;
+                loginButton.textContent = 'Anmelden';
+                reservationForm.classList.remove('hidden');
+                adminPanel.classList.add('hidden');
+            } else {
+                const username = prompt('Benutzername:');
+                const password = prompt('Passwort:');
+
+                // Überprüfen der verschlüsselten Werte (Benutzername und Passwort)
+                if (cyrb53(username) === 5267627094714880 && cyrb53(password) === 5267627094714880) {
+                    loggedInUser = username;
+                    loginButton.textContent = 'Abmelden';
+                    reservationForm.classList.add('hidden');
+                    adminPanel.classList.remove('hidden');
+                    loadReservations();
+                } else {
+                    alert('Falsche Anmeldedaten!');
+                }
+            }
+        });
+
+
+
+        // Funktion zum Laden der Reservierungen
+        function loadReservations() {
+            reservationTable.innerHTML = '';
+            reservations.forEach((reservation, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${reservation.name}</td>
+                    <td>${reservation.phone}</td>
+                    <td>${reservation.participants}</td>
+                    <td>${reservation.time}</td>
+                    <td>${reservation.comment}</td>
+                    <td><button class="delete-btn" data-index="${index}">Löschen</button></td>
+                `;
+                reservationTable.appendChild(row);
+            });
+
+            // Löschen von Reservierungen
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const index = event.target.getAttribute('data-index');
+                    reservations.splice(index, 1);
+                    updateLocalStorage();
+                    loadReservations();
+                    updateAvailableTimes(); // Update der verfügbaren Zeiten
+                });
+            });
+
+            updateAvailableTimes(); // Update der verfügbaren Zeiten nach dem Laden der Reservierungen
+        }
+
+        // Funktion zum Speichern der Daten im localStorage
+        function updateLocalStorage() {
+            localStorage.setItem('reservations', JSON.stringify(reservations));
+        }
+
+        // Funktion zur Aktualisierung der verfügbaren Zeiten im Dropdown
+        function updateAvailableTimes() {
+            // Zurücksetzen der Zeitoptionen
+            timeSelect.innerHTML = '<option value="">Bitte wählen...</option>';
+            const availableTimes = ['10:00', '12:00', '14:00'];
+
+            availableTimes.forEach(time => {
+                if (timeSlots[time] < 5) {
+                    const option = document.createElement('option');
+                    option.value = time;
+                    option.textContent = `${time} (${5 - timeSlots[time]} Plätze verfügbar)`;
+                    timeSelect.appendChild(option);
+                }
+            });
+        }
+
+        // Formularabsendung
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const participants = parseInt(document.getElementById('participants').value, 10);
+            const time = document.getElementById('time').value;
+            const comment = document.getElementById('comment').value;
+
+            if (timeSlots[time] + participants > 5) {
+                alert(`Maximal 5 Personen pro Zeit erlaubt! Verfügbar: ${5 - timeSlots[time]} Plätze.`);
+                return;
+            }
+
+            const newReservation = { name, phone, participants, time, comment };
+            reservations.push(newReservation);
+            timeSlots[time] += participants;
+            updateLocalStorage();
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${name}</td>
+                <td>${phone}</td>
+                <td>${participants}</td>
+                <td>${time}</td>
+                <td>${comment}</td>
+            `;
+            reservationTable.appendChild(row);
+
+            form.reset();
+            updateAvailableTimes(); // Aktualisierung der Dropdown-Optionen
+            alert('Reservierung erfolgreich eingereicht!');
+        });
+
+        // Initialisierung der verfügbaren Zeiten
+        updateAvailableTimes();
+    </script>
+</body>
+</html>
