@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reservierung</title>
+    <title>Reservierungssystem</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -19,10 +19,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         header h1 {
             margin: 0;
+            font-size: 24px;
+            flex: 1;
+            text-align: center;
         }
 
         header button {
@@ -92,34 +96,129 @@
             display: none;
         }
 
+        /* Verbesserte Tabelle */
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            word-wrap: break-word; /* Lange Inhalte umbrechen */
         }
 
         th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
+            padding: 15px;
             text-align: left;
+            vertical-align: top; /* Inhalte oben ausrichten */
         }
 
         th {
             background-color: #4CAF50;
             color: white;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        td {
+            border-bottom: 1px solid #ddd;
+            font-size: 14px;
+            word-break: break-word; /* Lange Texte umbrechen */
+        }
+
+        tr:last-child td {
+            border-bottom: none;
         }
 
         .delete-btn {
             background-color: #f44336;
             color: white;
             border: none;
-            padding: 5px 10px;
+            padding: 8px 12px;
             cursor: pointer;
             border-radius: 5px;
+            font-size: 14px;
         }
 
         .delete-btn:hover {
             background-color: #d32f2f;
+        }
+
+        /* Mobile Optimierung */
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            header h1 {
+                font-size: 20px;
+                text-align: center;
+                flex: 1 100%;
+                margin-bottom: 10px;
+            }
+
+            header button {
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            .container {
+                margin: 10px;
+                padding: 15px;
+                width: 100%;
+            }
+
+            input, select, textarea, button {
+                font-size: 14px;
+                padding: 10px;
+                margin-bottom: 10px;
+            }
+
+            table {
+                font-size: 14px;
+                border: none;
+                width: 100%;
+            }
+
+            table, thead, tbody, th, td, tr {
+                display: block;
+                width: 100%;
+            }
+
+            thead tr {
+                display: none;
+            }
+
+            tr {
+                background-color: white;
+                margin-bottom: 15px;
+                border: 1px solid #ddd;
+                border-radius: 10px;
+                padding: 10px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+
+            td {
+                display: flex;
+                justify-content: space-between;
+                padding: 10px 5px;
+                border: none;
+            }
+
+            td::before {
+                content: attr(data-label);
+                font-weight: bold;
+                flex: 1;
+                color: #4CAF50;
+                padding-right: 10px;
+            }
+
+            .delete-btn {
+                padding: 8px 10px;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
@@ -144,7 +243,6 @@
             <label for="time">Zeit (max. 5 Personen pro Zeit):</label>
             <select id="time" name="time" required>
                 <option value="">Bitte wählen...</option>
-                <!-- Optionen werden dynamisch hinzugefügt -->
             </select>
 
             <label for="comment">Kommentar (freiwillig):</label>
@@ -167,10 +265,15 @@
                     <th>Aktionen</th>
                 </tr>
             </thead>
-            <tbody>
-                <!-- Reservierungsdaten werden hier eingefügt -->
-            </tbody>
+            <tbody id="reservationBody">
+                <!-- Dynamische Reservierungen kommen hierhin -->
+            </tbody>            
         </table>
+
+        <h3>Verfügbare Zeiten</h3>
+        <p>10:00 - <span id="slot10">0/5</span> Plätze belegt</p>
+        <p>12:00 - <span id="slot12">0/5</span> Plätze belegt</p>
+        <p>14:00 - <span id="slot14">0/5</span> Plätze belegt</p>
     </div>
 
     <script>
@@ -182,7 +285,7 @@
         const timeSelect = document.getElementById('time');
 
         let reservations = JSON.parse(localStorage.getItem('reservations')) || [];
-        let timeSlots = { '10:00': 0, '12:00': 0, '14:00': 0 };
+        let timeSlots = JSON.parse(localStorage.getItem('timeSlots')) || { '10:00': 0, '12:00': 0, '14:00': 0 };
         let loggedInUser = null;
 
         // Verschlüsselungsfunktion
@@ -225,8 +328,6 @@
             }
         });
 
-
-
         // Funktion zum Laden der Reservierungen
         function loadReservations() {
             reservationTable.innerHTML = '';
@@ -243,28 +344,21 @@
                 reservationTable.appendChild(row);
             });
 
-            // Löschen von Reservierungen
+            // Event listener für das Löschen von Reservierungen
             document.querySelectorAll('.delete-btn').forEach(button => {
                 button.addEventListener('click', (event) => {
                     const index = event.target.getAttribute('data-index');
-                    reservations.splice(index, 1);
+                    const deletedReservation = reservations.splice(index, 1)[0];
+                    timeSlots[deletedReservation.time] -= deletedReservation.participants;
                     updateLocalStorage();
                     loadReservations();
-                    updateAvailableTimes(); // Update der verfügbaren Zeiten
+                    updateAvailableTimes();
                 });
             });
-
-            updateAvailableTimes(); // Update der verfügbaren Zeiten nach dem Laden der Reservierungen
         }
 
-        // Funktion zum Speichern der Daten im localStorage
-        function updateLocalStorage() {
-            localStorage.setItem('reservations', JSON.stringify(reservations));
-        }
-
-        // Funktion zur Aktualisierung der verfügbaren Zeiten im Dropdown
+        // Aktualisieren der verfügbaren Zeiten im Dropdown und der Agenda
         function updateAvailableTimes() {
-            // Zurücksetzen der Zeitoptionen
             timeSelect.innerHTML = '<option value="">Bitte wählen...</option>';
             const availableTimes = ['10:00', '12:00', '14:00'];
 
@@ -276,6 +370,10 @@
                     timeSelect.appendChild(option);
                 }
             });
+
+            document.getElementById('slot10').textContent = `${timeSlots['10:00']}/5`;
+            document.getElementById('slot12').textContent = `${timeSlots['12:00']}/5`;
+            document.getElementById('slot14').textContent = `${timeSlots['14:00']}/5`;
         }
 
         // Formularabsendung
@@ -309,12 +407,24 @@
             reservationTable.appendChild(row);
 
             form.reset();
-            updateAvailableTimes(); // Aktualisierung der Dropdown-Optionen
+            updateAvailableTimes();
             alert('Reservierung erfolgreich eingereicht!');
         });
 
-        // Initialisierung der verfügbaren Zeiten
-        updateAvailableTimes();
+        // Laden der gespeicherten Daten beim ersten Laden der Seite
+        window.addEventListener('load', () => {
+            reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+            timeSlots = JSON.parse(localStorage.getItem('timeSlots')) || { '10:00': 0, '12:00': 0, '14:00': 0 };
+
+            loadReservations();
+            updateAvailableTimes();
+        });
+
+        // Speicherung der Daten in localStorage
+        function updateLocalStorage() {
+            localStorage.setItem('reservations', JSON.stringify(reservations));
+            localStorage.setItem('timeSlots', JSON.stringify(timeSlots));
+        }
     </script>
 </body>
 </html>
