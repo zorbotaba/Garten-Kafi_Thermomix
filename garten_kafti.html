@@ -143,6 +143,36 @@
             font-size: 0.9em;
         }
 
+        .opening-hours {
+            background-color: #FFCCCC; /* Passende Farbe für den Hintergrund */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .opening-hours p {
+            font-size: 1.2em;
+            color: #FF0000; /* Rote Farbe für den Text */
+            margin-bottom: 10px;
+        }
+
+        .opening-hours ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        .opening-hours ul li {
+            font-size: 1.1em;
+            color: #FF0000; /* Rote Farbe für die Öffnungszeiten */
+            margin-bottom: 8px;
+        }
+
+        .opening-hours ul li:before {
+            content: "• ";
+            color: #FF0000; /* Punkt in roter Farbe */
+        }
+
         /* Responsivität für mobile Geräte */
         @media (max-width: 768px) {
             header {
@@ -191,28 +221,36 @@
             <ul>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="thermomix.html">Thermomix</a></li>
-                <li><a href="kontaktformular.html">Kontaktformular</a></li>
+                <li><a href="kontaktformular.html">Kontakt</a></li>
             </ul>
         </div>
     </header>
 
     <main>
-        <h2>Unser Angebot</h2>
+        <h2>Mein Angebot</h2>
         <ul>
-            <li>Kaffeespezialitäten: Latte Macchiato, Cappuccino, Espresso und vieles mehr</li>
-            <li>Frische Kuchen und Gebäck</li>
-            <li>Leichte Snacks für zwischendurch</li>
-            <li>Erfrischende Getränke und hausgemachte Limonaden</li>
+            <li>z.B. Kaffeespezialitäten: Latte Macchiato, Cappuccino, Espresso und vieles mehr</li>
+            <li>z.B. Frische Kuchen und Gebäck</li>
+            <li>z.B. Leichte Snacks für zwischendurch</li>
+            <li>z.B. Erfrischende Getränke und hausgemachte Limonaden</li>
         </ul>
     
         <br>
+
+        <main>
+            <h2>Meine Öffnungszeiten</h2>
+            <div class="opening-hours">
+                <p><strong>Von März bis Oktober:</strong></p>
+                <ul>
+                    <li>Montag - Sonntag: 08:00 - 20:00 Uhr</li>
+                </ul>
+                <p><strong>Von November bis Februar:</strong></p>
+                <ul>
+                    <li>Geschlossen</li>
+                </ul>
+            </div>
+        </main>
         
-        <h2>Öffnungszeiten</h2>
-        <ul>
-            <li>Montag - Freitag: 08:00 - 18:00 Uhr</li>
-            <li>Samstag: 09:00 - 16:00 Uhr</li>
-            <li>Sonntag: Geschlossen</li>
-        </ul>
     </main>
     
 

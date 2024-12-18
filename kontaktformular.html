@@ -206,18 +206,47 @@
             }
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
-        function toggleMenu() {
-            const menu = document.querySelector('.menu');
-            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        emailjs.init('bekZiSDT9im5xlaPF'); // Deine EmailJS User-ID
+
+        function sendEmail(event) {
+            event.preventDefault(); // Verhindert das Standardformularverhalten
+
+            const form = document.getElementById('contactForm');
+            const formData = new FormData(form);
+
+            const templateParams = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                message: formData.get('message')
+            };
+
+            emailjs.send('service_kfstl3c', 'template_4u0xnmm', templateParams)
+                .then(function(response) {
+                    console.log('E-Mail erfolgreich gesendet', response);
+                    showConfirmation(); // Bestätigungsmeldung anzeigen
+                }, function(error) {
+                    console.log('Fehler beim Senden der E-Mail', error);
+                    alert('Es gab ein Problem beim Senden der E-Mail. Bitte versuchen Sie es später noch einmal.');
+                });
+
+            form.reset(); // Formular zurücksetzen
         }
 
         function showConfirmation() {
             const confirmationMessage = document.querySelector('.confirmation-message');
             confirmationMessage.style.display = 'block';
+        }
 
-            // Formular zurücksetzen
-            document.getElementById("contactForm").reset();
+        function toggleMenu() {
+            const menu = document.querySelector('.menu');
+            // Ändern Sie den display-Wert, um das Menü anzuzeigen oder zu verstecken
+            if (menu.style.display === 'block') {
+                menu.style.display = 'none';  // Verstecken
+            } else {
+                menu.style.display = 'block'; // Anzeigen
+            }
         }
     </script>
 </head>
@@ -236,7 +265,7 @@
 
     <main>
         <h3>Hier können Sie sich mit mir in Verbindung setzen, oder einen Termin buchen.</h3> <br>
-        <form id="contactForm" onsubmit="event.preventDefault(); showConfirmation();">
+        <form id="contactForm" onsubmit="sendEmail(event)">
             <div class="form-group">
                 <label for="name">Vollständiger Name</label>
                 <input type="text" id="name" name="name" required>
@@ -253,6 +282,7 @@
                 <button type="submit">Jetzt senden</button>
             </div>
         </form>
+
         <div class="confirmation-message">
             Vielen Dank für Ihre Kontaktaufnahme! 
         </div>
