@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thermomix & Garten Kafi</title>
+    <title>Kontaktformular</title>
     <style>
         /* Allgemeines Reset und Body Styling */
         * {
@@ -102,8 +102,8 @@
 
         /* Hauptinhalt Styling */
         main {
-            max-width: 1200px;
-            margin: 30px auto;
+            max-width: 800px;
+            margin: 40px auto;
             padding: 20px;
         }
 
@@ -111,28 +111,56 @@
             text-align: center;
             color: #444;
             margin-bottom: 20px;
-            font-size: 2em;
+            font-size: 2.5em;
         }
 
-        main .about {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
+        .form-group {
+            margin-bottom: 20px;
         }
 
-        main .about img {
-            max-width: 300px;
+        .form-group label {
+            font-size: 1.2em;
+            color: #444;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input, .form-group textarea {
             width: 100%;
-            border-radius: 15px;
-            margin: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            font-size: 1.1em;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        main .about p {
-            flex: 1;
-            margin: 20px;
-            font-size: 1.1em;
+        .form-group textarea {
+            height: 150px;
+        }
+
+        .form-group button {
+            background-color: #8BC34A;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group button:hover {
+            background-color: #7CB342;
+        }
+
+        .confirmation-message {
+            display: none;
+            background-color: #8BC34A;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 5px;
+            font-size: 1.2em;
         }
 
         /* Footer Styling */
@@ -141,7 +169,7 @@
             color: white;
             text-align: center;
             padding: 15px 0;
-            margin-top: 30px;
+            margin-top: 40px;
         }
 
         footer p {
@@ -150,9 +178,12 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            main .about {
-                flex-direction: column;
-                text-align: center;
+            header h1 {
+                font-size: 2.5em;
+            }
+
+            .form-group input, .form-group textarea {
+                font-size: 1em;
             }
         }
     </style>
@@ -161,31 +192,50 @@
             const menu = document.querySelector('.menu');
             menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
         }
+
+        function showConfirmation() {
+            const confirmationMessage = document.querySelector('.confirmation-message');
+            confirmationMessage.style.display = 'block';
+
+            // Formular zurücksetzen
+            document.getElementById("contactForm").reset();
+        }
     </script>
 </head>
 <body>
     <header>
-        <h1>Thermomix & Garten Kafi</h1>
-        <p>Entdecken Sie kulinarische Köstlichkeiten und entspanntes Ambiente</p>
+        <h1>Kontaktformular</h1>
         <button class="menu-button" onclick="toggleMenu()">☰</button>
         <div class="menu">
             <ul>
+                <li><a href="index.html">Home</a></li>
                 <li><a href="thermomix.html">Thermomix</a></li>
                 <li><a href="garten_kafti.html">Garten Kafi</a></li>
-                <li><a href="kontaktformular.html">Kontaktformular</a></li>
             </ul>
         </div>
     </header>
 
     <main>
-        <h2>Über mich</h2>
-        <div class="about">
-            <img src="Sonja_Frei" alt="Bild von Sonja Frei">
-            <p>
-                Willkommen! Ich bin Sonja Frei, und ich lade Sie ein, meine Leidenschaft für den Thermomix und mein gemütliches 
-                Garten Kafi zu entdecken. Hier finden Sie Inspiration für kreative Küche und erholsame Momente inmitten 
-                der Natur. Lassen Sie sich begeistern!
-            </p>
+        <h3>Hier können Sie sich mit mir in Verbindung setzen, oder einen Termin buchen.</h3> <br>
+        <form id="contactForm" onsubmit="event.preventDefault(); showConfirmation();">
+            <div class="form-group">
+                <label for="name">Vollständiger Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">E-Mail Adresse</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Nachricht</label>
+                <textarea id="message" name="message" required></textarea>
+            </div>
+            <div class="form-group">
+                <button type="submit">Jetzt senden</button>
+            </div>
+        </form>
+        <div class="confirmation-message">
+            Vielen Dank für Ihre Kontaktaufnahme! 
         </div>
     </main>
 

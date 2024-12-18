@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garten Kafi</title>
+    <style>
+        /* Allgemeines Reset und Body Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #FF0000; /* Hintergrund rot */
+            color: #333;
+            line-height: 1.6;
+            background-image: radial-gradient(white 15%, transparent 16%);
+            background-size: 20px 20px;
+        }
+
+        /* Header Styling */
+        header {
+            background-color: white;
+            color: #FF0000;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Zentriert den gesamten Header-Inhalt */
+            position: relative; /* Ermöglicht das Positionieren von Logo und Text */
+        }
+
+        header img {
+            max-height: 60px; /* Passt die Größe des Logos an */
+            position: absolute; /* Positioniert das Logo absolut im Header */
+            left: 20px; /* Abstand vom linken Rand */
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin: 0;
+            text-align: center; /* Zentriert den Text im Header */
+            flex-grow: 1; /* Erlaubt dem Titel, den verfügbaren Platz zu füllen */
+        }
+
+        /* Menü Styling */
+        .menu-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #444;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2em;
+        }
+
+        .menu {
+            display: none;
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .menu ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .menu ul li {
+            border-bottom: 1px solid #ddd;
+        }
+
+        .menu ul li a {
+            display: block;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: #444;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .menu ul li a:hover {
+            background-color: #FF0000;
+            color: white;
+        }
+
+        /* Hauptinhalt Styling */
+        main {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        main h2 {
+            text-align: center;
+            color: #FF0000;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        main ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        main ul li {
+            background-color: #FFCCCC;
+            color: #FF0000;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 1.2em;
+        }
+
+        /* Öffnungszeiten Styling */
+        .hours {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .hours table {
+            margin: 0 auto;
+            border-collapse: collapse;
+            font-size: 1.1em;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .hours table th, .hours table td {
+            border: 1px solid #FF0000;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .hours table th {
+            background-color: #FF0000;
+            color: white;
+        }
+
+        .hours table td {
+            background-color: #FFCCCC;
+        }
+
+        /* Footer Styling */
+        footer {
+            background-color: white;
+            color: #FF0000;
+            text-align: center;
+            padding: 15px 0;
+            margin-top: 40px;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        footer p {
+            font-size: 0.9em;
+        }
+
+        /* Responsivität für mobile Geräte */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            .menu-button {
+                font-size: 1.5em;
+            }
+
+            .menu {
+                right: 10px;
+            }
+
+            main {
+                padding: 15px;
+            }
+
+            .hours table {
+                font-size: 1em;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html">
+            <img src="logo.png" alt="Garten Kafi Logo"> <!-- Hier das Logo einfügen -->
+        </a>
+        <h1>Garten Kafi</h1>
+        <button class="menu-button" onclick="toggleMenu()">☰</button>
+        <div class="menu">
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Angebot</a></li>
+                <li><a href="#">Öffnungszeiten</a></li>
+                <li><a href="#">Kontakt</a></li>
+            </ul>
+        </div>
+        <h1>Garten Kafi</h1>
+        <button class="menu-button" onclick="toggleMenu()">☰</button>
+        <div class="menu">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="thermomix.html">Thermomix</a></li>
+                <li><a href="kontaktformular.html">Kontakt</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <h2>Unser Angebot</h2>
+        <ul>
+            <li>Kaffeespezialitäten: Latte Macchiato, Cappuccino, Espresso und vieles mehr</li>
+            <li>Frische Kuchen und Gebäck</li>
+            <li>Leichte Snacks für zwischendurch</li>
+            <li>Erfrischende Getränke und hausgemachte Limonaden</li>
+        </ul>
+
+        <div class="hours">
+            <h2>Öffnungszeiten</h2>
+            <table>
+                <tr>
+                    <th>Tag</th>
+                    <th>Öffnungszeiten</th>
+                </tr>
+                <tr>
+                    <td>Montag</td>
+                    <td>Geschlossen</td>
+                </tr>
+                <tr>
+                    <td>Dienstag - Freitag</td>
+                    <td>09:00 - 18:00</td>
+                </tr>
+                <tr>
+                    <td>Samstag</td>
+                    <td>10:00 - 17:00</td>
+                </tr>
+                <tr>
+                    <td>Sonntag</td>
+                    <td>10:00 - 16:00</td>
+                </tr>
+            </table>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Garten Kafi. Alle Rechte vorbehalten.</p>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.querySelector('.menu');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
+</body>
+</html>
