@@ -23,19 +23,18 @@
         header {
             background-color: #f9f9f9;
             color: #333;
-            padding: 20px 0;
+            padding: 20px 0 40px; /* Mehr Platz unten */
             position: relative;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         header h1 {
+            word-break: break-word; /* Zeilenumbruch innerhalb von Wörtern */
+            hyphens: auto; /* Automatische Trennung */
             font-size: 3em;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin: 10px 0;
-            color: #444;
+            margin: 0 auto; /* Zentriert den Titel */
+            padding: 0 20px; /* Zusätzlicher Abstand */
         }
 
         header p {
@@ -56,6 +55,7 @@
             cursor: pointer;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             font-size: 1em;
+            z-index: 10; /* Stellt sicher, dass der Button über anderen Elementen liegt */
         }
 
         .menu-button:focus {
@@ -71,6 +71,7 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             border-radius: 5px;
             overflow: hidden;
+            z-index: 10;
         }
 
         .menu ul {
@@ -93,6 +94,8 @@
             text-decoration: none;
             color: #444;
             transition: background-color 0.3s, color 0.3s;
+            word-break: break-word; /* Zeilenumbruch bei langen Links */
+            hyphens: auto;
         }
 
         .menu ul li a:hover {
@@ -150,11 +153,35 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
+            header {
+                padding-top: 60px; /* Mehr Abstand nach oben für kleine Bildschirme */
+            }
+
+            header h1 {
+                font-size: 2em; /* Kleinere Schrift für die Überschrift */
+                word-break: break-word; /* Zeilenumbruch */
+            }
+
+            header p {
+                font-size: 1em; /* Kleinere Schrift für den Untertitel */
+            }
+
+            .menu-button {
+                top: 10px; /* Menü-Button etwas weiter nach oben schieben */
+                right: 10px; /* Position weiter rechts */
+            }
+
             main .about {
-                flex-direction: column;
+                flex-direction: column; /* Inhalt untereinander für kleine Bildschirme */
                 text-align: center;
             }
+
+            main .about img {
+                margin: 10px auto; /* Zentriere das Bild */
+            }
         }
+
+
     </style>
     <script>
         function toggleMenu() {
@@ -166,13 +193,13 @@
 <body>
     <header>
         <h1>Thermomix & Garten Kafi</h1>
-        <p>Entdecken Sie kulinarische Köstlichkeiten und entspanntes Ambiente</p>
+        <p>Entdecken Sie köstliche Rezepte und entspannende Momente in einer einzigartigen Atmosphäre</p>
         <button class="menu-button" onclick="toggleMenu()">☰</button>
         <div class="menu">
             <ul>
                 <li><a href="thermomix.html">Thermomix</a></li>
                 <li><a href="garten_kafti.html">Garten Kafi</a></li>
-                <li><a href="kontaktformular.html">Kontaktformular</a></li>
+                <li><a href="kontaktformular.html">Kontakt</a></li>
             </ul>
         </div>
     </header>
@@ -180,11 +207,12 @@
     <main>
         <h2>Über mich</h2>
         <div class="about">
-            <img src="Sonja_Frei" alt="Bild von Sonja Frei">
+            <img src="sonja_frei.jpg" alt="Sonja Frei - Ihr Gastgeber">
             <p>
-                Willkommen! Ich bin Sonja Frei, und ich lade Sie ein, meine Leidenschaft für den Thermomix und mein gemütliches 
-                Garten Kafi zu entdecken. Hier finden Sie Inspiration für kreative Küche und erholsame Momente inmitten 
-                der Natur. Lassen Sie sich begeistern!
+                Hallo und herzlich willkommen! Ich bin Sonja Frei, leidenschaftliche Köchin und Gastgeberin. 
+                Mit dem Thermomix zaubere ich kreative Gerichte, die selbst Kochanfänger begeistern. 
+                In meinem Garten Kafi lade ich Sie ein, die Seele baumeln zu lassen und sich von der Natur inspirieren zu lassen. 
+                Kommen Sie vorbei und erleben Sie Genuss und Entspannung in einem einzigartigen Ambiente!
             </p>
         </div>
     </main>

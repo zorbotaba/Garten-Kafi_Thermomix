@@ -30,12 +30,12 @@
         }
 
         header h1 {
-            font-size: 3em;
+            font-size: 2.5em;
             font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin: 10px 0;
-            color: #444;
+            margin-left: 20px;
+            text-align: center;
+            flex-grow: 2;
         }
 
         header p {
@@ -178,12 +178,31 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            header h1 {
-                font-size: 2.5em;
+            header {
+                padding-top: 60px; /* Mehr Abstand nach oben für kleine Bildschirme */
             }
 
-            .form-group input, .form-group textarea {
-                font-size: 1em;
+            header h1 {
+                font-size: 2em; /* Kleinere Schrift für die Überschrift */
+                hyphens: auto;
+            }
+
+            header p {
+                font-size: 1em; /* Kleinere Schrift für den Untertitel */
+            }
+
+            .menu-button {
+                top: 10px; /* Menü-Button etwas weiter nach oben schieben */
+                right: 10px; /* Position weiter rechts */
+            }
+
+            main .about {
+                flex-direction: column; /* Inhalt untereinander für kleine Bildschirme */
+                text-align: center;
+            }
+
+            main .about img {
+                margin: 10px auto; /* Zentriere das Bild */
             }
         }
     </style>
