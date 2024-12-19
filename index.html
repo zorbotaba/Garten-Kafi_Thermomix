@@ -23,18 +23,17 @@
         header {
             background-color: #f9f9f9;
             color: #333;
-            padding: 20px 0 40px; /* Mehr Platz unten */
-            position: relative;
+            padding: 20px 0 40px;
             text-align: center;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         header h1 {
-            word-break: break-word; /* Zeilenumbruch innerhalb von Wörtern */
-            hyphens: auto; /* Automatische Trennung */
+            word-break: break-word;
+            hyphens: auto;
             font-size: 3em;
-            margin: 0 auto; /* Zentriert den Titel */
-            padding: 0 20px; /* Zusätzlicher Abstand */
+            margin: 0 auto;
+            padding: 0 20px;
         }
 
         header p {
@@ -44,7 +43,7 @@
 
         /* Navigation Styling */
         .menu-button {
-            position: absolute;
+            position: fixed; /* Fixiert den Button */
             top: 20px;
             right: 20px;
             background-color: #444;
@@ -55,7 +54,7 @@
             cursor: pointer;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             font-size: 1em;
-            z-index: 10; /* Stellt sicher, dass der Button über anderen Elementen liegt */
+            z-index: 10; /* Über anderen Elementen */
         }
 
         .menu-button:focus {
@@ -64,7 +63,7 @@
 
         .menu {
             display: none;
-            position: absolute;
+            position: fixed; /* Fixiert die Navigation */
             top: 60px;
             right: 20px;
             background-color: white;
@@ -94,7 +93,7 @@
             text-decoration: none;
             color: #444;
             transition: background-color 0.3s, color 0.3s;
-            word-break: break-word; /* Zeilenumbruch bei langen Links */
+            word-break: break-word;
             hyphens: auto;
         }
 
@@ -154,34 +153,32 @@
         /* Responsive Design */
         @media (max-width: 768px) {
             header {
-                padding-top: 60px; /* Mehr Abstand nach oben für kleine Bildschirme */
+                padding-top: 60px;
             }
 
             header h1 {
-                font-size: 2em; /* Kleinere Schrift für die Überschrift */
-                word-break: break-word; /* Zeilenumbruch */
+                font-size: 2em;
+                word-break: break-word;
             }
 
             header p {
-                font-size: 1em; /* Kleinere Schrift für den Untertitel */
+                font-size: 1em;
             }
 
             .menu-button {
-                top: 10px; /* Menü-Button etwas weiter nach oben schieben */
-                right: 10px; /* Position weiter rechts */
+                top: 10px;
+                right: 10px;
             }
 
             main .about {
-                flex-direction: column; /* Inhalt untereinander für kleine Bildschirme */
+                flex-direction: column;
                 text-align: center;
             }
 
             main .about img {
-                margin: 10px auto; /* Zentriere das Bild */
+                margin: 10px auto;
             }
         }
-
-
     </style>
     <script>
         function toggleMenu() {

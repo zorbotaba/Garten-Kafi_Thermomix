@@ -45,7 +45,7 @@
 
         /* Navigation Styling */
         .menu-button {
-            position: absolute;
+            position: fixed; /* Fixiert den Button */
             top: 20px;
             right: 20px;
             background-color: #444;
@@ -56,6 +56,7 @@
             cursor: pointer;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             font-size: 1em;
+            z-index: 10; /* Über anderen Elementen */
         }
 
         .menu-button:focus {
@@ -64,13 +65,14 @@
 
         .menu {
             display: none;
-            position: absolute;
+            position: fixed; /* Fixiert die Navigation */
             top: 60px;
             right: 20px;
             background-color: white;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             border-radius: 5px;
             overflow: hidden;
+            z-index: 10;
         }
 
         .menu ul {

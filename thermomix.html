@@ -62,17 +62,6 @@
             outline: none;
         }
 
-        .menu {
-            display: none;
-            position: absolute;
-            top: 60px;
-            right: 20px;
-            background-color: white;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
         .menu-button {
             position: absolute;
             top: 20px;
@@ -85,7 +74,25 @@
             cursor: pointer;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             font-size: 1em;
-            z-index: 10; /* Stellt sicher, dass der Button über anderen Elementen liegt */
+            z-index: 10;
+        }
+                
+
+
+        .menu-button:focus {
+            outline: none;
+        }
+
+        .menu {
+            display: none;
+            position: fixed; /* Fixiert die Navigation */
+            top: 60px;
+            right: 20px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 10;
         }
 
         .menu ul {

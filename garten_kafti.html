@@ -48,7 +48,7 @@
 
         /* Menü Styling */
         .menu-button {
-            position: absolute;
+            position: fixed; /* Fixiert den Button */
             top: 20px;
             right: 20px;
             background-color: #444;
@@ -59,12 +59,16 @@
             cursor: pointer;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             font-size: 1em;
-            z-index: 10; /* Stellt sicher, dass der Button über anderen Elementen liegt */
+            z-index: 10; /* Über anderen Elementen */
+        }
+
+        .menu-button:focus {
+            outline: none;
         }
 
         .menu {
-            display: none; /* Versteckt das Menü initial */
-            position: absolute;
+            display: none;
+            position: fixed; /* Fixiert die Navigation */
             top: 60px;
             right: 20px;
             background-color: white;
@@ -129,6 +133,36 @@
             font-size: 1.2em;
         }
 
+        .opening-hours {
+            background-color: #FFCCCC;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .opening-hours p {
+            font-size: 1.2em;
+            color: #FF0000;
+            margin-bottom: 10px;
+        }
+
+        .opening-hours ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        .opening-hours ul li {
+            font-size: 1.1em;
+            color: #FF0000;
+            margin-bottom: 8px;
+        }
+
+        .opening-hours ul li:before {
+            content: "• ";
+            color: #FF0000;
+        }
+
         /* Footer Styling */
         footer {
             background-color: white;
@@ -143,77 +177,28 @@
             font-size: 0.9em;
         }
 
-        .opening-hours {
-            background-color: #FFCCCC; /* Passende Farbe für den Hintergrund */
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
-        }
-
-        .opening-hours p {
-            font-size: 1.2em;
-            color: #FF0000; /* Rote Farbe für den Text */
-            margin-bottom: 10px;
-        }
-
-        .opening-hours ul {
-            list-style: none;
-            padding-left: 20px;
-        }
-
-        .opening-hours ul li {
-            font-size: 1.1em;
-            color: #FF0000; /* Rote Farbe für die Öffnungszeiten */
-            margin-bottom: 8px;
-        }
-
-        .opening-hours ul li:before {
-            content: "• ";
-            color: #FF0000; /* Punkt in roter Farbe */
-        }
-
-        /* Responsivität für mobile Geräte */
+        /* Responsivität */
         @media (max-width: 768px) {
             header {
-                padding-top: 20px; /* Reduziere den Abstand nach oben für kleine Bildschirme */
-                flex-direction: column; /* Header-Inhalt untereinander anordnen */
-                align-items: flex-start; /* Positioniere das Logo links */
-                justify-content: flex-start; /* Positioniere alle Items oben */
+                flex-direction: column;
+                align-items: flex-start;
             }
 
             header h1 {
-                font-size: 2em; /* Kleinere Schrift für die Überschrift */
-                word-break: break-word; /* Zeilenumbruch */
-                text-align: left; /* Verhindert das Zentrieren der Überschrift */
+                font-size: 2em;
+                text-align: left;
             }
 
-            header .logo-container {
-                margin-left: 10px; /* Etwas Abstand nach links für das Logo */
-                margin-bottom: 10px; /* Etwas Abstand nach unten für das Logo */
-            }
-
-            header .menu-button {
-                top: 10px; /* Menü-Button etwas weiter nach oben schieben */
-                right: 10px; /* Position weiter rechts */
-            }
-
-            main .about {
-                flex-direction: column; /* Inhalt untereinander für kleine Bildschirme */
-                text-align: center;
-            }
-
-            main .about img {
-                margin: 10px auto; /* Zentriere das Bild */
+            main {
+                padding: 15px;
             }
         }
-
     </style>
 </head>
 <body>
     <header>
         <a href="index.html">
-            <img src="logo.png" alt="Garten Kafi Logo"> <!-- Logo -->
+            <img src="logo.png" alt="Garten Kafi Logo">
         </a>
         <h1>Garten Kafi</h1>
         <button class="menu-button" onclick="toggleMenu()">☰</button>
@@ -229,30 +214,24 @@
     <main>
         <h2>Mein Angebot</h2>
         <ul>
-            <li>z.B. Kaffeespezialitäten: Latte Macchiato, Cappuccino, Espresso und vieles mehr</li>
-            <li>z.B. Frische Kuchen und Gebäck</li>
-            <li>z.B. Leichte Snacks für zwischendurch</li>
-            <li>z.B. Erfrischende Getränke und hausgemachte Limonaden</li>
+            <li>Kaffeespezialitäten: Latte Macchiato, Cappuccino, Espresso und mehr</li>
+            <li>Frische Kuchen und Gebäck</li>
+            <li>Leichte Snacks</li>
+            <li>Erfrischende Getränke und hausgemachte Limonaden</li>
         </ul>
-    
-        <br>
 
-        <main>
-            <h2>Meine Öffnungszeiten</h2>
-            <div class="opening-hours">
-                <p><strong>Von März bis Oktober:</strong></p>
-                <ul>
-                    <li>Montag - Sonntag: 08:00 - 20:00 Uhr</li>
-                </ul>
-                <p><strong>Von November bis Februar:</strong></p>
-                <ul>
-                    <li>Geschlossen</li>
-                </ul>
-            </div>
-        </main>
-        
+        <h2>Meine Öffnungszeiten</h2>
+        <div class="opening-hours">
+            <p><strong>Von März bis Oktober:</strong></p>
+            <ul>
+                <li>Montag - Sonntag: 08:00 - 20:00 Uhr</li>
+            </ul>
+            <p><strong>Von November bis Februar:</strong></p>
+            <ul>
+                <li>Geschlossen</li>
+            </ul>
+        </div>
     </main>
-    
 
     <footer>
         <p>&copy; 2024 Garten Kafi. Alle Rechte vorbehalten.</p>
